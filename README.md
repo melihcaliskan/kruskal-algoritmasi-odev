@@ -1,0 +1,2 @@
+# kruskal-algoritmasi-odev
+ 
