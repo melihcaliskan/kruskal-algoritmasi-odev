@@ -15,15 +15,16 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 /**
- * @author imssbora
+ * @author
  */
 class Test extends JFrame {
     private static XYSeriesCollection dataset = new XYSeriesCollection();
+    static XYSeries kume = new XYSeries("Grup 1");
 
     private static JPanel createDataSetPanel() {
         XYDataset dataset = createDataset();
         JFreeChart chart = ChartFactory.createScatterPlot(
-                "Kruskal Algoritması",
+                "Kümelenmemiş Noktalar",
                 "",
                 "",
                 dataset,
@@ -38,73 +39,25 @@ class Test extends JFrame {
         plot.getDomainAxis().setVisible(false);
 
         ChartPanel panel = new ChartPanel(chart);
-        panel.setPreferredSize(new Dimension(1000, 800));
+        panel.setPreferredSize(new Dimension(600, 400));
         return panel;
     }
 
     private static XYDataset createDataset() {
-        XYSeries series1 = new XYSeries("Grup 1");
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
             Random r = new Random();
             int randomInt = r.nextInt(20) + 0;
             int randomInt2 = r.nextInt(20) + 0;
 
-            series1.add(randomInt, randomInt2);
+            kume.add(randomInt, randomInt2);
         }
-        dataset.addSeries(series1);
-
-        XYSeries series2 = new XYSeries("Grup 2");
-        for (int i = 0; i < 30; i++) {
-            Random r = new Random();
-            int randomInt = r.nextInt(20) + 15;
-            int randomInt2 = r.nextInt(20) + 15;
-            series2.add(randomInt, randomInt2);
-        }
-        dataset.addSeries(series2);
-
-        XYSeries series3 = new XYSeries("Grup 3");
-        for (int i = 0; i < 30; i++) {
-            Random r = new Random();
-            int randomInt = r.nextInt(20) + 20;
-            int randomInt2 = r.nextInt(20) + 20;
-            series3.add(randomInt, randomInt2);
-        }
-        dataset.addSeries(series3);
+        dataset.addSeries(kume);
         return dataset;
-    }
-
-    private static JPanel istatistikleriOlustur() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JLabel adet = new JLabel("İSTATİSTİKLER");
-        adet.setFont(new java.awt.Font("Trebuchet", 1, 25));
-        panel.add(adet);
-
-        for (int i = 0; i < 3; i++) {
-            JLabel ad = new JLabel(i + ". küme");
-            ad.setFont(new java.awt.Font("Trebuchet", 1, 16));
-
-            JLabel nok_sayisi = new JLabel("Nokta sayısı: ");
-            nok_sayisi.setFont(new java.awt.Font("Trebuchet", 0, 16));
-            JLabel ort_nokta = new JLabel("Ortak noktası: ");
-            ort_nokta.setFont(new java.awt.Font("Trebuchet", 0, 16));
-            JLabel standart_sapma = new JLabel("Standart sapma : ");
-            standart_sapma.setFont(new java.awt.Font("Trebuchet", 0, 16));
-
-            panel.add(ad);
-            panel.add(nok_sayisi);
-            panel.add(ort_nokta);
-            panel.add(standart_sapma);
-            panel.add(new JSeparator(SwingConstants.HORIZONTAL));
-
-        }
-        return panel;
     }
 
     private static JPanel createMainPanel() {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(400, 800));
+        panel.setPreferredSize(new Dimension(400, 400));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         panel.setBorder(BorderFactory.createLineBorder(new java.awt.Color(238, 238, 238), 20));
@@ -113,10 +66,12 @@ class Test extends JFrame {
         panel.add(adet);
 
         JTextField adetSayisi = new JTextField();
+        adetSayisi.setFont(adetSayisi.getFont().deriveFont(10f));
+        adetSayisi.setPreferredSize(new Dimension(120, 120));
         panel.add(adetSayisi);
 
         JButton ekleButonu = new JButton("Rastgele Nokta Ekle");
-        ekleButonu.setPreferredSize(new Dimension(50, 100));
+        ekleButonu.setPreferredSize(new Dimension(120, 50));
         panel.add(ekleButonu);
 
 
@@ -135,16 +90,30 @@ class Test extends JFrame {
         panel.add(kumeLabel);
 
         JTextField kumeSayisi = new JTextField();
-        kumeSayisi.setFont(adetSayisi.getFont().deriveFont(10f));
+        kumeSayisi.setText("3");
+        kumeSayisi.setFont(kumeSayisi.getFont().deriveFont(10f));
+        kumeSayisi.setPreferredSize(new Dimension(50, 80));
         panel.add(kumeSayisi);
 
         JButton calistirButonu = new JButton("Çalıştır");
-        ekleButonu.setPreferredSize(new Dimension(20, 10));
+        calistirButonu.setPreferredSize(new Dimension(50, 80));
         panel.add(calistirButonu);
 
-        panel.add(new JSeparator(SwingConstants.HORIZONTAL));
-        panel.add(istatistikleriOlustur());
+        calistirButonu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+                // Kümelenmemiş veri
+                // Küme sayısı
+                int kume_sayisi = Integer.parseInt(kumeSayisi.getText());
+
+                JFrame frame = new JFrame ("Sonuç");
+                frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+                frame.getContentPane().add (new Sonuc(kume,kume_sayisi));
+                frame.pack();
+                frame.setVisible (true);
+            }
+        });
 
         return panel;
     }
@@ -155,7 +124,7 @@ class Test extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(1200, 800));
+        panel.setPreferredSize(new Dimension(800, 400));
 
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 90));
@@ -175,11 +144,17 @@ class Test extends JFrame {
             series1.add(randomInt, randomInt2);
         }
         dataset.addSeries(series1);
-
     }
 
 
     public static void main(String[] args) {
         showScene();
+        int kume_sayisi = Integer.parseInt("3");
+
+        JFrame frame = new JFrame ("Sonuç");
+        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add (new Sonuc(kume,kume_sayisi));
+        frame.pack();
+        frame.setVisible (true);
     }
 }
