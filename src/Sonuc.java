@@ -12,10 +12,6 @@ import java.awt.*;
 import java.util.Random;
 
 public class Sonuc extends JPanel {
-    private JButton jcomp1;
-    private JButton jcomp2;
-    private JButton jcomp3;
-    private JTextField jcomp4;
     static JPanel panel = new JPanel();
 
     public Sonuc(XYSeries kume, int kume_sayisi) {
@@ -62,7 +58,7 @@ public class Sonuc extends JPanel {
         int gecici_kume_sayisi = 0;
 
         while (gecici_kume_sayisi < kume_sayisi) {
-            XYSeries veri = new XYSeries("Grup " + gecici_kume_sayisi);
+            XYSeries veri = new XYSeries("Grup " + (gecici_kume_sayisi + 1));
 
             System.out.println("Şuanki küme: " + gecici_kume_sayisi);
             System.out.println("-------------------");
@@ -85,7 +81,7 @@ public class Sonuc extends JPanel {
 
             JLabel nok_sayisi = new JLabel("Nokta sayısı: " + veri.getItemCount());
             nok_sayisi.setFont(new java.awt.Font("Trebuchet", 0, 16));
-            JLabel ort_nokta = new JLabel("Ortak noktası: ");
+            JLabel ort_nokta = new JLabel("Orta noktası: ");
             ort_nokta.setFont(new java.awt.Font("Trebuchet", 0, 16));
             JLabel standart_sapma = new JLabel("Standart sapma : ");
             standart_sapma.setFont(new java.awt.Font("Trebuchet", 0, 16));
@@ -120,17 +116,16 @@ public class Sonuc extends JPanel {
         frame.pack();
     }
 
-    public static double standartSapmaHesapla(double numArray[])
-    {
+    public static double standartSapmaHesapla(double numArray[]) {
         double sum = 0.0, standardDeviation = 0.0;
         int length = numArray.length;
-        for(double num : numArray) {
+        for (double num : numArray) {
             sum += num;
         }
-        double mean = sum/length;
-        for(double num: numArray) {
+        double mean = sum / length;
+        for (double num : numArray) {
             standardDeviation += Math.pow(num - mean, 2);
         }
-        return Math.sqrt(standardDeviation/length);
+        return Math.sqrt(standardDeviation / length);
     }
 }

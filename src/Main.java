@@ -19,7 +19,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 class Test extends JFrame {
     private static XYSeriesCollection dataset = new XYSeriesCollection();
-    static XYSeries kume = new XYSeries("Grup 1");
+    static XYSeries kume = new XYSeries("Kümelenmemiş Grup");
 
     private static JPanel createDataSetPanel() {
         XYDataset dataset = createDataset();
@@ -44,13 +44,7 @@ class Test extends JFrame {
     }
 
     private static XYDataset createDataset() {
-        for (int i = 0; i < 60; i++) {
-            Random r = new Random();
-            int randomInt = r.nextInt(20) + 0;
-            int randomInt2 = r.nextInt(20) + 0;
-
-            kume.add(randomInt, randomInt2);
-        }
+        kumeyeElemanEkle(kume, 60);
         dataset.addSeries(kume);
         return dataset;
     }
@@ -107,11 +101,11 @@ class Test extends JFrame {
                 // Küme sayısı
                 int kume_sayisi = Integer.parseInt(kumeSayisi.getText());
 
-                JFrame frame = new JFrame ("Sonuç");
-                frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add (new Sonuc(kume,kume_sayisi));
+                JFrame frame = new JFrame("Sonuç");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.getContentPane().add(new Sonuc(kume, kume_sayisi));
                 frame.pack();
-                frame.setVisible (true);
+                frame.setVisible(true);
             }
         });
 
@@ -136,25 +130,28 @@ class Test extends JFrame {
     }
 
     private static void ekleButonuFonksiyonu(java.awt.event.ActionEvent evt, int adet) {
-        XYSeries series1 = new XYSeries("Grup 4");
-        for (int i = 0; i < adet; i++) {
+        kumeyeElemanEkle(kume, adet);
+    }
+
+    public static void kumeyeElemanEkle(XYSeries kume, int eleman_sayisi) {
+        for (int i = 0; i < eleman_sayisi; i++) {
             Random r = new Random();
             int randomInt = r.nextInt(60) + 0;
             int randomInt2 = r.nextInt(60) + 0;
-            series1.add(randomInt, randomInt2);
+            kume.add(randomInt, randomInt2);
         }
-        dataset.addSeries(series1);
     }
 
 
     public static void main(String[] args) {
         showScene();
         int kume_sayisi = Integer.parseInt("3");
-
-        JFrame frame = new JFrame ("Sonuç");
-        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add (new Sonuc(kume,kume_sayisi));
+        /*
+        JFrame frame = new JFrame("Sonuç");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new Sonuc(kume, kume_sayisi));
         frame.pack();
-        frame.setVisible (true);
+        frame.setVisible(true);
+        */
     }
 }
