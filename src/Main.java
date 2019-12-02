@@ -18,6 +18,9 @@ import org.jfree.data.xy.XYSeriesCollection;
  * @author
  */
 class Test extends JFrame {
+
+    static int baslangic_nokta_sayisi = 20;
+
     private static XYSeriesCollection dataset = new XYSeriesCollection();
     static XYSeries kume = new XYSeries("Kümelenmemiş Grup");
 
@@ -44,7 +47,7 @@ class Test extends JFrame {
     }
 
     private static XYDataset createDataset() {
-        kumeyeElemanEkle(kume, 60);
+        kumeyeElemanEkle(kume, baslangic_nokta_sayisi);
         dataset.addSeries(kume);
         return dataset;
     }
@@ -55,6 +58,13 @@ class Test extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         panel.setBorder(BorderFactory.createLineBorder(new java.awt.Color(238, 238, 238), 20));
+
+        JLabel suanki_adet = new JLabel("Nokta sayısı: " + baslangic_nokta_sayisi);
+        suanki_adet.setFont(new java.awt.Font("Trebuchet", 1, 25));
+        panel.add(suanki_adet);
+
+        panel.add(new JSeparator(SwingConstants.HORIZONTAL));
+
 
         JLabel adet = new JLabel("Adet:");
         panel.add(adet);
@@ -73,6 +83,7 @@ class Test extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int kullanici_adet = Integer.parseInt(adetSayisi.getText());
+                suanki_adet.setText("Nokta sayısı: " + String.valueOf(kullanici_adet + baslangic_nokta_sayisi));
                 ekleButonuFonksiyonu(e, kullanici_adet);
                 adetSayisi.setText("");
             }
@@ -126,7 +137,6 @@ class Test extends JFrame {
         frame.add(createMainPanel());
         frame.add(createDataSetPanel());
         frame.pack();
-
     }
 
     private static void ekleButonuFonksiyonu(java.awt.event.ActionEvent evt, int adet) {
