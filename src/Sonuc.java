@@ -9,10 +9,19 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Sonuc extends JPanel {
     static JPanel panel = new JPanel();
+    static ArrayList<Float> oklidDizisi = new ArrayList<Float>();
 
     public Sonuc(XYSeries kume, int kume_sayisi) {
         add(istatistikleriOlustur());
@@ -52,6 +61,36 @@ public class Sonuc extends JPanel {
 
         XYSeriesCollection dataset = new XYSeriesCollection();
 
+        List<Oklid> oklidDizisi = new ArrayList<Oklid>();
+
+        for (int i = 0; i < kume.getItemCount(); i++) {
+            int suankiX = kume.getDataItem(i).getX().intValue();
+            int suankiY = kume.getDataItem(i).getY().intValue();
+
+            for (int j = 0; j < kume.getItemCount(); j++) {
+
+                int geciciX = kume.getDataItem(j).getX().intValue();
+                int geciciY = kume.getDataItem(j).getY().intValue();
+
+                if (suankiX != geciciX && suankiY != geciciY) {
+                	oklidDizisi.add(new Oklid(suankiX, geciciX, suankiY, geciciY));
+
+                    System.out.println("X: " + suankiX + ", Y: " + suankiY + " / Geçici X: " + geciciX + " Geçici Y: " + geciciY);
+                    System.out.println("-------- " + i + " -----------");
+                }
+            }
+        }
+       
+        // Tekrarlanan öğeleri siliyoruz.
+        oklidDizisi = new ArrayList<Oklid>(new LinkedHashSet<Oklid>(oklidDizisi));
+
+
+        // Diziyi sıralıyoruz.
+        Collections.sort(oklidDizisi);
+        
+        for (int i = 0; i < oklidDizisi.size(); i++) {
+            System.out.println(oklidDizisi.get(i).hesapla());
+        }
         int kumedeki_eleman_sayisi = kume.getItemCount();
         int bolum = kumedeki_eleman_sayisi / kume_sayisi;
         System.out.println("Bölüm: " + bolum);
@@ -60,41 +99,23 @@ public class Sonuc extends JPanel {
         while (gecici_kume_sayisi < kume_sayisi) {
             XYSeries veri = new XYSeries("Grup " + (gecici_kume_sayisi + 1));
 
-            System.out.println("Şuanki küme: " + gecici_kume_sayisi);
-            System.out.println("-------------------");
+            //System.out.println("Şuanki küme: " + gecici_kume_sayisi);
+            //System.out.println("-------------------");
 
             // 0-20
             // 20-40
             // 40-60
             // arasında çalışacak for döngüsü.
             // Küme sayısından sırayla 0-1-2 gelecek.
+            
             for (int i = gecici_kume_sayisi * bolum; i < bolum + (gecici_kume_sayisi * bolum); i++) {
-                System.out.println("X: " + kume.getDataItem(i).getX() + ", Y: " + kume.getDataItem(i).getY());
-                veri.add(kume.getDataItem(i).getX(), kume.getDataItem(i).getY());
+                System.out.println("X: " + oklidDizisi.get(i).x1 + ", Y: " + oklidDizisi.get(i).y1);
+                veri.add(oklidDizisi.get(i).x1, oklidDizisi.get(i).y1);
+                veri.add(oklidDizisi.get(i).x2, oklidDizisi.get(i).y2);
             }
             dataset.addSeries(veri);
-
-
-            //İSTATİSTİK KISMI İÇİN VERİLER.
-            JLabel ad = new JLabel((gecici_kume_sayisi + 1) + ". küme");
-            ad.setFont(new java.awt.Font("Trebuchet", 1, 16));
-
-            JLabel nok_sayisi = new JLabel("Nokta sayısı: " + veri.getItemCount());
-            nok_sayisi.setFont(new java.awt.Font("Trebuchet", 0, 16));
-            JLabel ort_nokta = new JLabel("Orta noktası: ");
-            ort_nokta.setFont(new java.awt.Font("Trebuchet", 0, 16));
-            JLabel standart_sapma = new JLabel("Standart sapma : ");
-            standart_sapma.setFont(new java.awt.Font("Trebuchet", 0, 16));
-
-            panel.add(ad);
-            panel.add(nok_sayisi);
-            panel.add(ort_nokta);
-            panel.add(standart_sapma);
-            panel.add(new JSeparator(SwingConstants.HORIZONTAL));
-
             gecici_kume_sayisi++;
         }
-
         return dataset;
     }
 

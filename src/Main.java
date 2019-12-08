@@ -17,7 +17,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 /**
  * @author
  */
-class Test extends JFrame {
+class Main extends JFrame {
 
     static int baslangic_nokta_sayisi = 20;
 
@@ -70,6 +70,7 @@ class Test extends JFrame {
         panel.add(adet);
 
         JTextField adetSayisi = new JTextField();
+        adetSayisi.setText("20");
         adetSayisi.setFont(adetSayisi.getFont().deriveFont(10f));
         adetSayisi.setPreferredSize(new Dimension(120, 120));
         panel.add(adetSayisi);
@@ -156,12 +157,10 @@ class Test extends JFrame {
     public static void main(String[] args) {
         showScene();
         int kume_sayisi = Integer.parseInt("3");
-        /*
         JFrame frame = new JFrame("Sonuç");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(new Sonuc(kume, kume_sayisi));
         frame.pack();
         frame.setVisible(true);
-        */
     }
 }
